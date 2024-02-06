@@ -1,5 +1,9 @@
 *.sln
-*.vs/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
