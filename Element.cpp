@@ -6,6 +6,7 @@ Element::Element(std::uint16_t x, std::uint16_t y, ElementType type, std::uint16
 	_matrixX = (x - (x % _elementSize)) / _elementSize;
 	_matrixY = (y - (y % _elementSize)) / _elementSize;
 	_type = type;
+	_isFalling = true;
 }
 
 void Element::set(std::uint16_t x, std::uint16_t y)
@@ -22,4 +23,14 @@ std::uint16_t Element::getMatrixX() const
 std::uint16_t Element::getMatrixY() const
 {
 	return _matrixY;
+}
+
+void Element::changeFallingState(bool newState)
+{
+	_isFalling = newState;
+}
+
+bool Element::GetFallingState() const
+{
+	return _isFalling;
 }

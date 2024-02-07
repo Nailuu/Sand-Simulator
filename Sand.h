@@ -8,6 +8,6 @@ class Sand : public Element
 {
 	public:
 		Sand(std::uint16_t x, std::uint16_t y, ElementType type, std::uint16_t elementSize);
-		void update(Matrix matrix) override;
+		void update(Matrix *matrix) override;
 };
 

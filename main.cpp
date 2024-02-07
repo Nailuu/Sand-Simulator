@@ -20,10 +20,13 @@ int main()
 {
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Sand Simulator");
     sf::VertexArray va;
-
+    bool isButtonPressed = false;
+    sf::Vector2i localMousePos = sf::Vector2i();
     int cursor_box_size = CURSOR_BOX_MIN_SIZE;
 
     Matrix matrix(WIN_HEIGHT, WIN_WIDTH, ELEMENT_PIXEL_MULTIPLIER);
+
+    matrix.summonElement(400, 0, SAND);
 
     window.setMouseCursorVisible(false);
 
@@ -45,10 +48,22 @@ int main()
             {
                 if (event.mouseButton.button == sf::Mouse::Left)
                 {
-                    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
-                    matrix.summonElement(mousePos.x, mousePos.y, SAND);
+                    isButtonPressed = true;
                 }
             }
+            else if (event.type == sf::Event::MouseButtonReleased)
+            {
+                if (event.mouseButton.button == sf::Mouse::Left)
+                {
+                    isButtonPressed = false;
+                }
+            }
+        }
+
+        if (isButtonPressed)
+        {
+            localMousePos = sf::Mouse::getPosition(window);
+            matrix.summonElement(localMousePos.x, localMousePos.y, SAND);
         }
 
         va = setCursorBox(sf::Mouse::getPosition(window), cursor_box_size);
