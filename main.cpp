@@ -15,18 +15,20 @@
 #define CURSOR_BOX_MAX_SIZE ELEMENT_PIXEL_MULTIPLIER * 5
 
 sf::VertexArray setCursorBox(sf::Vector2i localMousePos, int cursor_box_size);
+void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix* matrix, sf::Mouse::Button button);
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(WIN_WIDTH, WIN_HEIGHT), "Sand Simulator");
-    sf::VertexArray va;
+    window.setFramerateLimit(60);
+
+    sf::VertexArray cursor_box;
     bool isButtonPressed = false;
-    sf::Vector2i localMousePos = sf::Vector2i();
+    sf::Mouse::Button button = sf::Mouse::Button();
+
     int cursor_box_size = CURSOR_BOX_MIN_SIZE;
 
     Matrix matrix(WIN_HEIGHT, WIN_WIDTH, ELEMENT_PIXEL_MULTIPLIER);
-
-    matrix.summonElement(400, 0, SAND);
 
     window.setMouseCursorVisible(false);
 
@@ -46,37 +48,56 @@ int main()
             }
             else if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
+                if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right)
                 {
                     isButtonPressed = true;
                 }
             }
             else if (event.type == sf::Event::MouseButtonReleased)
             {
-                if (event.mouseButton.button == sf::Mouse::Left)
+                if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right)
                 {
                     isButtonPressed = false;
+                    button = event.mouseButton.button;
                 }
             }
         }
 
         if (isButtonPressed)
         {
-            localMousePos = sf::Mouse::getPosition(window);
-            matrix.summonElement(localMousePos.x, localMousePos.y, SAND);
+            pop(sf::Mouse::getPosition(window), cursor_box_size, &matrix, button);
         }
 
-        va = setCursorBox(sf::Mouse::getPosition(window), cursor_box_size);
-
+        cursor_box = setCursorBox(sf::Mouse::getPosition(window), cursor_box_size);
         matrix.update();
 
         window.clear(sf::Color::Black);
-        window.draw(matrix);
-        window.draw(va);
+        window.draw(matrix.getVertexArray());
+        window.draw(cursor_box);
         window.display();
     }
 
     return 0;
+}
+
+void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix *matrix, sf::Mouse::Button button)
+{
+    sf::Vector2f absolutePos = sf::Vector2f(localMousePos.x - (cursor_box_size / 2), localMousePos.y - (cursor_box_size / 2));
+
+    for (std::uint16_t i = 0; i < cursor_box_size / ELEMENT_PIXEL_MULTIPLIER; i++)
+    {
+        for (std::uint16_t j = 0; j < cursor_box_size / ELEMENT_PIXEL_MULTIPLIER; j++)
+        {
+            int random = rand() % 3;
+            if (random == 1)
+            {
+                if (button == sf::Mouse::Left)
+                    matrix->summonElement(absolutePos.x + (i * ELEMENT_PIXEL_MULTIPLIER), absolutePos.y + (j * ELEMENT_PIXEL_MULTIPLIER), SAND);
+                else if (button == sf::Mouse::Right)
+                    matrix->summonElement(absolutePos.x + (i * ELEMENT_PIXEL_MULTIPLIER), absolutePos.y + (j * ELEMENT_PIXEL_MULTIPLIER), WATER);
+            }
+        }
+    }
 }
 
 sf::VertexArray setCursorBox(sf::Vector2i localMousePos, int cursor_box_size)

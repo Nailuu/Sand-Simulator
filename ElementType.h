@@ -2,6 +2,6 @@
 
 enum ElementType 
 {
-	VOID,
-	SAND
+	SAND,
+	WATER
 };

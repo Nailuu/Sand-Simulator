@@ -6,7 +6,7 @@
 #include <utility>
 #include "Element.h"
 
-class Matrix : public sf::Drawable
+class Matrix
 {
 	public:
 		Matrix(std::uint16_t w_height, std::uint16_t w_width, std::uint16_t elementSize);
@@ -15,13 +15,13 @@ class Matrix : public sf::Drawable
 		void summonElement(std::uint16_t x, std::uint16_t y, ElementType type);
 		std::uint16_t getWidth() const;
 		std::uint16_t getHeight() const;
+		sf::VertexArray getVertexArray() const;
 		void update();
 
 	private:
-		virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 		std::uint16_t _height;
 		std::uint16_t _width;
 		std::uint16_t _elementSize;
 		std::vector<std::vector<Element*>> _matrix;
-		//sf::VertexArray _vertices;
+		sf::VertexArray _vertices;
 };
