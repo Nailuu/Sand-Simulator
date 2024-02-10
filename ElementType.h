@@ -3,5 +3,6 @@
 enum ElementType 
 {
 	SAND,
-	WATER
+	WATER,
+	STONE
 };

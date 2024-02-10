@@ -5,6 +5,7 @@
 #include <SFML/Window.hpp>
 #include "Matrix.h"
 #include "Element.h"
+#include "Statistics.h"
 
 #define WIN_HEIGHT 800
 #define WIN_WIDTH 800
@@ -15,7 +16,7 @@
 #define CURSOR_BOX_MAX_SIZE ELEMENT_PIXEL_MULTIPLIER * 5
 
 sf::VertexArray setCursorBox(sf::Vector2i localMousePos, int cursor_box_size);
-void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix* matrix, sf::Mouse::Button button);
+void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix* matrix, sf::Keyboard::Scancode button);
 
 int main()
 {
@@ -24,11 +25,13 @@ int main()
 
     sf::VertexArray cursor_box;
     bool isButtonPressed = false;
-    sf::Mouse::Button button = sf::Mouse::Button();
+    sf::Keyboard::Scancode button = sf::Keyboard::Scancode();
 
     int cursor_box_size = CURSOR_BOX_MIN_SIZE;
 
     Matrix matrix(WIN_HEIGHT, WIN_WIDTH, ELEMENT_PIXEL_MULTIPLIER);
+
+    Statistics stats;
 
     window.setMouseCursorVisible(false);
 
@@ -46,19 +49,19 @@ int main()
                 else if (event.mouseWheel.delta == -1 && cursor_box_size > CURSOR_BOX_MIN_SIZE)
                     cursor_box_size -= ELEMENT_PIXEL_MULTIPLIER;
             }
-            else if (event.type == sf::Event::MouseButtonPressed)
+            else if (event.type == sf::Event::KeyPressed)
             {
-                if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right)
+                if (event.key.scancode == sf::Keyboard::Scan::Q || event.key.scancode == sf::Keyboard::Scan::W || event.key.scancode == sf::Keyboard::Scan::E)
                 {
                     isButtonPressed = true;
+                    button = event.key.scancode;
                 }
             }
-            else if (event.type == sf::Event::MouseButtonReleased)
+            else if (event.type == sf::Event::KeyReleased)
             {
-                if (event.mouseButton.button == sf::Mouse::Left || event.mouseButton.button == sf::Mouse::Right)
+                if (event.key.scancode == sf::Keyboard::Scan::Q || event.key.scancode == sf::Keyboard::Scan::W || event.key.scancode == sf::Keyboard::Scan::E)
                 {
                     isButtonPressed = false;
-                    button = event.mouseButton.button;
                 }
             }
         }
@@ -69,18 +72,19 @@ int main()
         }
 
         cursor_box = setCursorBox(sf::Mouse::getPosition(window), cursor_box_size);
-        matrix.update();
+        matrix.update(&stats);
 
         window.clear(sf::Color::Black);
         window.draw(matrix.getVertexArray());
         window.draw(cursor_box);
+        window.draw(stats);
         window.display();
     }
 
     return 0;
 }
 
-void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix *matrix, sf::Mouse::Button button)
+void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix *matrix, sf::Keyboard::Scancode button)
 {
     sf::Vector2f absolutePos = sf::Vector2f(localMousePos.x - (cursor_box_size / 2), localMousePos.y - (cursor_box_size / 2));
 
@@ -88,13 +92,15 @@ void pop(sf::Vector2i localMousePos, int cursor_box_size, Matrix *matrix, sf::Mo
     {
         for (std::uint16_t j = 0; j < cursor_box_size / ELEMENT_PIXEL_MULTIPLIER; j++)
         {
-            int random = rand() % 3;
+            int random = rand() % 2;
             if (random == 1)
             {
-                if (button == sf::Mouse::Left)
+                if (button == sf::Keyboard::Scancode::Q)
                     matrix->summonElement(absolutePos.x + (i * ELEMENT_PIXEL_MULTIPLIER), absolutePos.y + (j * ELEMENT_PIXEL_MULTIPLIER), SAND);
-                else if (button == sf::Mouse::Right)
+                else if (button == sf::Keyboard::Scancode::W)
                     matrix->summonElement(absolutePos.x + (i * ELEMENT_PIXEL_MULTIPLIER), absolutePos.y + (j * ELEMENT_PIXEL_MULTIPLIER), WATER);
+                else if (button == sf::Keyboard::Scancode::E)
+                    matrix->summonElement(absolutePos.x + (i * ELEMENT_PIXEL_MULTIPLIER), absolutePos.y + (j * ELEMENT_PIXEL_MULTIPLIER), STONE);
             }
         }
     }

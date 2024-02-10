@@ -1,6 +1,8 @@
 #include "Matrix.h"
 #include "Sand.h"
 #include "Water.h"
+#include "Stone.h"
+#include "Statistics.h"
 #include <iostream>
 #include <algorithm>
 
@@ -49,7 +51,7 @@ std::uint16_t Matrix::getHeight() const
 	return _height;
 }
 
-void Matrix::update()
+void Matrix::update(Statistics* stats)
 {
 	std::uint16_t x = 0;
 	std::uint32_t verticesCount = 0;
@@ -89,7 +91,8 @@ void Matrix::update()
 		x++;
 	}
 
-	std::cout << "Vertices: " << verticesCount << " - Elements: " << verticesCount / 6 << std::endl;
+	stats->setVerticesCount(verticesCount);
+	stats->setElementsCount(verticesCount / 6);
 }
 
 void Matrix::summonElement(std::uint16_t x, std::uint16_t y, ElementType type)
@@ -118,6 +121,11 @@ void Matrix::summonElement(std::uint16_t x, std::uint16_t y, ElementType type)
 				_matrix[water->getMatrixX()][water->getMatrixY()] = water;
 				break;
 			}
+
+			case STONE:
+				Element* stone = new Stone(x, y, type, _elementSize);
+				_matrix[stone->getMatrixX()][stone->getMatrixY()] = stone;
+				break;
 		}
 	}
 }

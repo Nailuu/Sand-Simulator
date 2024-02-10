@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <utility>
 #include "Element.h"
+#include "Statistics.h"
 
 class Matrix
 {
@@ -16,7 +17,7 @@ class Matrix
 		std::uint16_t getWidth() const;
 		std::uint16_t getHeight() const;
 		sf::VertexArray getVertexArray() const;
-		void update();
+		void update(Statistics* stats);
 
 	private:
 		std::uint16_t _height;
