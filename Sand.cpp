@@ -38,35 +38,6 @@ void Sand::update(Matrix *matrix)
 		return;
 	}
 
-	else if (GetFallingState() == false && getMatrixX() != (matrix->getWidth() - 1) && matrix->getXY(getMatrixX() + 1, getMatrixY()) == nullptr)
-	{
-		for (std::uint16_t i = 0; i < _spreadFactor; i++)
-		{
-			if (getMatrixX() + 1 + i < matrix->getWidth() && matrix->getXY(getMatrixX() + 1 + i, getMatrixY()) == nullptr)
-			{
-				matrix->swap(std::make_pair(getMatrixX(), getMatrixY()), std::make_pair(getMatrixX() + 1 + i, getMatrixY()));
-			}
-			else {
-				changeFallingState(false);
-				break;
-			}
-		}
-		return;
-	}
-
-	else if (GetFallingState() == false && getMatrixX() != 0 && matrix->getXY(getMatrixX() - 1, getMatrixY()) == nullptr)
-	{
-		for (std::uint16_t i = _spreadFactor; i > 0; i--)
-		{
-			if (getMatrixX() - 1 - i > 0 && matrix->getXY(getMatrixX() - 1 - i, getMatrixY()) == nullptr)
-			{
-				matrix->swap(std::make_pair(getMatrixX(), getMatrixY()), std::make_pair(getMatrixX() - 1 - i, getMatrixY()));
-			}
-			else {
-				changeFallingState(false);
-				break;
-			}
-		}
-		return;
-	}
+	/*else
+		changeFallingState(false);*/
 }

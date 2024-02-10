@@ -19,8 +19,8 @@ void Element::set(std::uint16_t x, std::uint16_t y, std::uint16_t m_height)
 	_windowX = x * _elementSize;
 	_windowY = y * _elementSize;
 
-	if (y == m_height - 1)
-		changeFallingState(false);
+	/*if (y == m_height - 1)
+		changeFallingState(false);*/
 }
 
 std::uint16_t Element::getMatrixX() const

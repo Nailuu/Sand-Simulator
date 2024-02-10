@@ -11,6 +11,8 @@ Stone::Stone(std::uint16_t x, std::uint16_t y, ElementType type, std::uint16_t e
 	int random = rand() % 3;
 
 	setColor(colors[random]);
+
+	changeFallingState(false);
 }
 
 void Stone::update(Matrix* matrix)

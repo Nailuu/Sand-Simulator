@@ -143,6 +143,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Sand.cpp" />
+    <ClCompile Include="Selector.cpp" />
     <ClCompile Include="Statistics.cpp" />
     <ClCompile Include="Stone.cpp" />
     <ClCompile Include="Water.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="ElementType.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Sand.h" />
+    <ClInclude Include="Selector.h" />
     <ClInclude Include="Statistics.h" />
     <ClInclude Include="Stone.h" />
     <ClInclude Include="Water.h" />

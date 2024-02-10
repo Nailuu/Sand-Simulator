@@ -36,8 +36,6 @@ void Matrix::swap(std::pair<std::uint16_t, std::uint16_t> target1, std::pair<std
 
 Element* Matrix::getXY(std::uint16_t x, std::uint16_t y) const
 {
-	if (x >= _width || y >= _height)
-		return nullptr;
 	return _matrix[x][y];
 }
 
